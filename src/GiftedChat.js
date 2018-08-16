@@ -430,8 +430,9 @@ class GiftedChat extends React.Component {
     if (this.props.onInputTextChanged) {
       this.props.onInputTextChanged('');
     }
-
-    DeviceEventEmitter.emit('RNGiftedChatResetInputText');
+    if (Platform.OS === 'ios') {
+      DeviceEventEmitter.emit('RNGiftedChatResetInputText');
+    }
   }
 
   onInitialLayoutViewLayout(e) {

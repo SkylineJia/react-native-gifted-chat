@@ -22,10 +22,12 @@ export default class Composer extends React.Component {
   resetListener: ?EmitterSubscription;
 
   componentDidMount() {
-    this.resetListener = DeviceEventEmitter.addListener(
-      'RNGiftedChatResetInputText',
-      this.clearText
-    );
+    if (Platform.OS === 'ios') {
+      this.resetListener = DeviceEventEmitter.addListener(
+        'RNGiftedChatResetInputText',
+        this.clearText
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -77,7 +79,10 @@ export default class Composer extends React.Component {
           { height: this.props.composerHeight }
         ]}
         autoFocus={this.props.textInputAutoFocus}
-        value={this.state.text}
+        value={Platform.select({
+          ios: this.state.text,
+          android: this.props.text
+        })}
         enablesReturnKeyAutomatically
         underlineColorAndroid="transparent"
         keyboardAppearance={this.props.keyboardAppearance}
